@@ -1,0 +1,62 @@
+html, body {
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .container {
+    width: 400px;
+    height: 600px;
+    background-color: brown;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+
+    header {
+      min-width: 100%;
+      display: flex;
+      align-self: center;
+      flex-direction: row;
+      justify-content: center;
+    }
+
+    .enter-field {
+      width: 80%;
+      height: 5rem;
+      display: flex;
+      align-self: center;
+      border: 1px solid black;
+      margin-bottom: 2rem;
+
+    }
+
+    .button-input {
+      width: 80%;
+      height: 400px;
+      background-color: royalblue;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      align-items: stretch;
+      padding: 10px;
+      align-self: center;
+      flex-wrap: wrap;
+
+      .standard-button {
+        min-width: 25%;
+        height: 40px;
+        background-color: coral;
+        border: 1px solid midnightblue;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+
+
+  }
+}

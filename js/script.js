@@ -1,4 +1,5 @@
-let inpData = document.querySelector('[data-calc]');
+// let inpData = document.querySelector('[data-calc]');
+let buttonInput = document.querySelector('.button-input');
 
 let arr = [];
 function inpClick(e) {
@@ -23,9 +24,14 @@ function result(e) {
 
 }
 
-addEventListener('keyup', inpClick);
+//addEventListener('keyup', inpClick);
 
-addEventListener('keyup', result);
+//addEventListener('keyup', result);
+
+buttonInput.addEventListener('click', function (e) {
+  console.log(e.target.dataset.value);
+  console.log('clicked');
+});
 
 
 
