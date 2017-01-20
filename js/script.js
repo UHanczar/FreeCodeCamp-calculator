@@ -1,5 +1,10 @@
 // let inpData = document.querySelector('[data-calc]');
-let buttonInput = document.querySelector('.button-input');
+const buttonInput = document.querySelector('.button-input');
+const buttons = document.querySelectorAll('[data-value]');
+const display = document.querySelector('.enter-field');
+let str = '';
+let res = 0;
+
 
 let arr = [];
 function inpClick(e) {
@@ -28,10 +33,22 @@ function result(e) {
 
 //addEventListener('keyup', result);
 
-buttonInput.addEventListener('click', function (e) {
-  console.log(e.target.dataset.value);
-  console.log('clicked');
-});
+buttons.forEach(button => button.addEventListener('click', function (e) {
+  let val = e.target.dataset.value;
+
+  // console.count(val);
+  if(val == '=') {
+    res = eval(str);
+    str = res;
+    display.innerText = res;
+    console.log(res);
+    return res;
+  }
+  str += val;
+  display.innerText = str;
+  //console.log(str);
+}));
+
 
 
 

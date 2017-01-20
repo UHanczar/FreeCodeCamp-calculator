@@ -2,6 +2,10 @@
 
 // let inpData = document.querySelector('[data-calc]');
 var buttonInput = document.querySelector('.button-input');
+var buttons = document.querySelectorAll('[data-value]');
+var display = document.querySelector('.enter-field');
+var str = '';
+var res = 0;
 
 var arr = [];
 function inpClick(e) {
@@ -16,8 +20,8 @@ function inpClick(e) {
 
 function result(e) {
   if (e.keyCode === 187 && !e.shiftKey) {
-    var res = arr.join('');
-    var _result = eval(res);
+    var _res = arr.join('');
+    var _result = eval(_res);
     console.log(_result);
     arr = [];
     return _result;
@@ -28,9 +32,22 @@ function result(e) {
 
 //addEventListener('keyup', result);
 
-buttonInput.addEventListener('click', function (e) {
-  console.log(e.target.dataset.value);
-  console.log('clicked');
+buttons.forEach(function (button) {
+  return button.addEventListener('click', function (e) {
+    var val = e.target.dataset.value;
+
+    // console.count(val);
+    if (val == '=') {
+      res = eval(str);
+      str = res;
+      display.innerText = res;
+      console.log(res);
+      return res;
+    }
+    str += val;
+    display.innerText = str;
+    //console.log(str);
+  });
 });
 
 //# sourceMappingURL=script-compiled.js.map
