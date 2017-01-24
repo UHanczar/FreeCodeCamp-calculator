@@ -1,53 +1,105 @@
 'use strict';
 
 // let inpData = document.querySelector('[data-calc]');
-var buttonInput = document.querySelector('.button-input');
-var buttons = document.querySelectorAll('[data-value]');
+
+
+// const buttonInput = document.querySelector('.button-input');
+// const buttons = document.querySelectorAll('[data-value]');
 var display = document.querySelector('.enter-field');
-var str = '';
-var res = 0;
+var numbers = document.querySelectorAll('.number');
+var operators = document.querySelectorAll('.operator');
+var clearLastNumber = document.querySelector('[data-value="CE"]');
+var clearAll = document.querySelector('[data-value="C"]');
+var deleteLastSymbol = document.querySelector('[data-value="«"]');
+var equal = document.getElementById('equal');
+// a variable, that stores current number
+var number = '';
+var operator = '';
+// a variable, that stores previous number
+var firstNumber = '';
+// display current number on the screen
+display.innerText = '0';
+var val = void 0;
+// a variable, that stores value after evaluation
+var result = '';
 
-var arr = [];
-function inpClick(e) {
-  // console.log(String.fromCharCode(e.which));
-  console.log(e.key);
-  if (e.keyCode !== 187) {
-    arr.push(e.key);
-    console.log(arr);
+function addNumber(e) {
+  if (display.innerText) {
+    display.innerText = number;
   }
-  return arr;
+
+  if (e.target.classList.contains('number')) {
+    val = e.target.dataset.value;
+    number += val;
+    console.log(number);
+    display.innerText = number;
+  } else {
+    return false;
+  }
 }
 
-function result(e) {
-  if (e.keyCode === 187 && !e.shiftKey) {
-    var _res = arr.join('');
-    var _result = eval(_res);
-    console.log(_result);
-    arr = [];
-    return _result;
-  }
+function addOperator(e) {
+  val = e.target.dataset.value;
+  operator = val;
+  firstNumber = number;
+  number = '';
+  // console.log(firstNumber, number, operator);
 }
 
-//addEventListener('keyup', inpClick);
+function evaluate() {
+  if (operator === '+') {
+    result = (parseFloat(firstNumber) + parseFloat(number)).toString(10);
+    console.log(result);
+  } else if (operator === '-') {
+    result = (parseFloat(firstNumber) - parseFloat(number)).toString(10);
+    console.log(result);
+  } else if (operator === '*') {
+    result = (parseFloat(firstNumber) * parseFloat(number)).toString(10);
+    console.log(result);
+  } else if (operator === '/') {
+    result = (parseFloat(firstNumber) / parseFloat(number)).toString(10);
+    console.log(result);
+  }
+  display.innerText = result;
+  firstNumber = '';
+  number = '';
+  result = '';
+}
 
-//addEventListener('keyup', result);
+function clearLNumb() {
+  // console.log(number + 'first console');
+  number = '';
+  // console.log(number + 'second console');
+}
 
-buttons.forEach(function (button) {
-  return button.addEventListener('click', function (e) {
-    var val = e.target.dataset.value;
+function cleanAll() {
+  // console.log(firstNumber, operator, number, result, 'first console');
+  firstNumber = '';
+  operator = '';
+  number = '';
+  result = '';
+  // console.log(firstNumber, operator, number, result, 'second console');
+}
 
-    // console.count(val);
-    if (val == '=') {
-      res = eval(str);
-      str = res;
-      display.innerText = res;
-      console.log(res);
-      return res;
-    }
-    str += val;
-    display.innerText = str;
-    //console.log(str);
-  });
+function delLastSymbol(e) {
+  addNumber(e);
+  // let length = number.length;
+  // console.log(number + 'before del');
+  number = number.substring(0, number.length - 1);
+  // console.log(number + 'after del');
+}
+
+numbers.forEach(function (number) {
+  return number.addEventListener('click', addNumber);
 });
+operators.forEach(function (operator) {
+  return operator.addEventListener('click', addOperator);
+});
+
+clearLastNumber.addEventListener('click', clearLNumb);
+clearAll.addEventListener('click', cleanAll);
+deleteLastSymbol.addEventListener('click', delLastSymbol);
+
+equal.addEventListener('click', evaluate);
 
 //# sourceMappingURL=script-compiled.js.map
