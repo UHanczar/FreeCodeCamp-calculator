@@ -11,6 +11,7 @@ var operators = document.querySelectorAll('.operator');
 var clearLastNumber = document.querySelector('[data-value="CE"]');
 var clearAll = document.querySelector('[data-value="C"]');
 var deleteLastSymbol = document.querySelector('[data-value="«"]');
+var sqrt = document.getElementById('sqrt');
 var equal = document.getElementById('equal');
 // a variable, that stores current number
 var number = '';
@@ -47,6 +48,10 @@ function addOperator(e) {
 }
 
 function evaluate() {
+  if (firstNumber === '' && operator === '') {
+    return null;
+  }
+
   if (operator === '+') {
     result = (parseFloat(firstNumber) + parseFloat(number)).toString(10);
     console.log(result);
@@ -68,16 +73,20 @@ function evaluate() {
 
 function clearLNumb() {
   // console.log(number + 'first console');
+
   number = '';
-  // console.log(number + 'second console');
+  display.innerText = '0';
+  console.log(firstNumber, number + 'second console');
 }
 
 function cleanAll() {
   // console.log(firstNumber, operator, number, result, 'first console');
+
   firstNumber = '';
   operator = '';
   number = '';
   result = '';
+  display.innerText = '0';
   // console.log(firstNumber, operator, number, result, 'second console');
 }
 
@@ -87,6 +96,26 @@ function delLastSymbol(e) {
   // console.log(number + 'before del');
   number = number.substring(0, number.length - 1);
   // console.log(number + 'after del');
+}
+
+function findSqrt() {
+  if (firstNumber !== '') {
+    display.innerText = "Err";
+    return false;
+  }
+
+  number = Math.sqrt(parseInt(number, 10)).toString();
+  result = number.length > 15 ? parseFloat(number).toFixed(15) : number;
+
+  // console.log(result);
+
+  display.innerText = result;
+  number = '';
+  result = '';
+}
+
+function addGap() {
+  console.log(display);
 }
 
 numbers.forEach(function (number) {
@@ -99,6 +128,10 @@ operators.forEach(function (operator) {
 clearLastNumber.addEventListener('click', clearLNumb);
 clearAll.addEventListener('click', cleanAll);
 deleteLastSymbol.addEventListener('click', delLastSymbol);
+
+sqrt.addEventListener('click', findSqrt);
+
+display.addEventListener('change', addGap);
 
 equal.addEventListener('click', evaluate);
 

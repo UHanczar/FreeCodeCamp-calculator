@@ -12,7 +12,8 @@ html, body {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: stretch; }
+    align-items: stretch;
+    font-family: 'Adamina', serif; }
     html .container header, body .container header {
       min-width: 100%;
       display: flex;
@@ -21,11 +22,15 @@ html, body {
       justify-content: center; }
     html .container .enter-field, body .container .enter-field {
       width: 80%;
-      height: 5rem;
+      height: 8rem;
       display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      align-items: flex-end;
       align-self: center;
       border: 1px solid black;
-      margin-bottom: 2rem; }
+      margin-bottom: 2rem;
+      font-size: 64px; }
     html .container .button-input, body .container .button-input {
       width: 80%;
       height: 400px;
