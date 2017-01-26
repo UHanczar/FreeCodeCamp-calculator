@@ -118,7 +118,9 @@ function findSqrt() {
 }
 
 function addGap() {
-  console.log(display);
+  if(number.length % 3 === 0) {
+    number += 'x';
+  }
 }
 
 numbers.forEach(number => number.addEventListener('click', addNumber));
@@ -131,7 +133,7 @@ deleteLastSymbol.addEventListener('click', delLastSymbol);
 
 sqrt.addEventListener('click', findSqrt);
 
-display.addEventListener('change', addGap);
+// display.addEventListener('change', addGap);
 
 equal.addEventListener('click', evaluate);
 
