@@ -47,8 +47,8 @@ function checkNumberLength() {
       display.style.fontSize = 64 + 'px';
       display.innerText = result;
     }
-    else if(number.length < 8 &&  number.length >= 0 || result.length < 8 && result.length >= 0) {
-    display.style.fontSize = 64 + 'px';
+    else if(number.length < 8 &&  number.length >= 0 || result.length <  8 && result.length >= 0) {
+      display.style.fontSize = 64 + 'px';
   }
 }
 
@@ -67,6 +67,10 @@ function addNumber(e) {
   }
 
   if(number.length === 15) {
+    return false;
+  }
+
+  if(number.length === 0 && val === '.') {
     return false;
   }
 
@@ -135,7 +139,11 @@ function clearLNumb() {
   // console.log(number + 'first console');
 
   number = '';
+
   display.innerText = '0';
+  display.style.fontSize = 64 + 'px';
+
+
   // console.log(firstNumber, number + 'second console');
 }
 
@@ -146,7 +154,9 @@ function cleanAll() {
   operator = '';
   number = '';
   result = '';
+
   display.innerText = '0';
+  display.style.fontSize = 64 + 'px';
   // console.log(firstNumber, operator, number, result, 'second console');
 }
 
@@ -171,12 +181,15 @@ function findSqrt() {
     return false;
   }
 
-  number = Math.sqrt(parseInt(number,10)).toString();
-  result = number.length > 15 ? parseFloat(number).toFixed(15) : number;
+  let num = Math.sqrt(parseInt(number,10));
+  number = num.toString();
+  console.log(number.length, typeof num);
+  result = number.length > 15 ? parseFloat(num).toFixed(10) : number;
 
-  // console.log(result);
+  console.log(result);
 
   display.innerText = result;
+  checkNumberLength();
   number = '';
   result = '';
 }

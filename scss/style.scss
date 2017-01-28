@@ -7,14 +7,15 @@ html, body {
   align-items: center;
 
   .container {
-    width: 400px;
+    width: 360px;
     height: 600px;
-    background-color: brown;
+    background-color: #eee1e5;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
     font-family: 'Adamina', serif;
+    //padding: 10px;
 
     header {
       min-width: 100%;
@@ -25,40 +26,52 @@ html, body {
     }
 
     .enter-field {
-      width: 80%;
-      height: 8rem;
+      width: 90%;
+      height: 10rem;
       display: flex;
       flex-direction: row;
       justify-content: flex-end;
       align-items: flex-end;
       align-self: center;
-      border: 1px solid black;
-      margin-bottom: 2rem;
+      //border: 1px solid black;
+      //margin-bottom: 2rem;
       font-size: 64px;
 
     }
 
     .button-input {
-      width: 80%;
+      width: 100%;
       height: 400px;
-      background-color: royalblue;
+      background-color: #bdb0b4;
       display: flex;
       flex-direction: row;
-      justify-content: space-around;
+      justify-content: center;
       align-items: stretch;
-      padding: 10px;
       align-self: center;
       flex-wrap: wrap;
+      border-top: 1px solid black;
+      padding: 0;
 
       .standard-button {
-        min-width: 20%;
-        height: 40px;
-        background-color: coral;
-        border: 1px solid midnightblue;
+        width: 25%;
+        height: 75px;
+        background-color: #bdb0b4;
+        //border: 1px solid midnightblue;
         display: flex;
         flex-direction: row;
         justify-content: center;
         align-items: center;
+        //margin: 5px;
+        font-size: 2rem;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #ac9fa3;
+        }
+
+        &:active {
+          background-color: #8c7f83;
+        }
       }
     }
 
