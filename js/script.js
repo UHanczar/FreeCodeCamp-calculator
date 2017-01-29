@@ -118,8 +118,8 @@ function addOperator(e) {
 }
 
 function evaluate() {
-  if(firstNumber === '' && operator === '') {
-    return null;
+  if(firstNumber === '' && number === '') {
+    return false;
   }
 
   if(result === undefined || result == isNaN(NaN) ) {
@@ -157,7 +157,7 @@ function clearLNumb() {
   // console.log(number + 'first console');
   number = '';
 
-  if(result !== '0') {
+  if(result !== '' && firstNumber !== '') {
     result = '';
     operator = '';
   }
