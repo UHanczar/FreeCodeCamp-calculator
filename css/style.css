@@ -13,7 +13,9 @@ html, body {
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
-    font-family: 'Adamina', serif; }
+    font-family: 'Adamina', serif;
+    border: 1px solid #3a3a3a;
+    box-shadow: 3px 4px 33px 2px #8c7f83; }
     html .container header, body .container header {
       min-width: 100%;
       display: flex;
@@ -26,7 +28,7 @@ html, body {
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      align-items: flex-end;
+      align-items: stretch;
       align-self: center;
       font-size: 64px; }
       html .container .enter-field .eval-div, body .container .enter-field .eval-div {
@@ -35,7 +37,9 @@ html, body {
         justify-content: flex-end;
         align-content: flex-start;
         text-align: right;
-        font-size: 32px; }
+        font-size: 22px;
+        color: #8c7f83;
+        flex-wrap: wrap; }
       html .container .enter-field .current-result, body .container .enter-field .current-result {
         width: 100%;
         flex-direction: row;
