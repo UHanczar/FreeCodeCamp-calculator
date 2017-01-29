@@ -1,9 +1,7 @@
-// let inpData = document.querySelector('[data-calc]');
-
-
-// const buttonInput = document.querySelector('.button-input');
-// const buttons = document.querySelectorAll('[data-value]');
 const display = document.querySelector('.enter-field');
+const evalDiv = document.querySelector('.eval-div');
+const currentResult = document.querySelector('.current-result');
+const standardButtons = document.querySelectorAll('.standard-button');
 const numbers = document.querySelectorAll('.number');
 const operators = document.querySelectorAll('.operator');
 const clearLastNumber = document.querySelector('[data-value="CE"]');
@@ -11,16 +9,19 @@ const clearAll = document.querySelector('[data-value="C"]');
 const deleteLastSymbol = document.querySelector('[data-value="«"]');
 const sqrt = document.getElementById('sqrt');
 const equal = document.getElementById('equal');
+
 // a variable, that stores current number
-let number = '';
+let number = '0';
 let operator = '';
 // a variable, that stores previous number
 let firstNumber = '';
 // display current number on the screen
-display.innerText = '0';
+currentResult.innerText = '0';
 let val;
 // a variable, that stores value after evaluation
 let result = '';
+// a variable for evaluation process div;
+let evaluationProcess = '';
 
 
 function checkNumberLength() {
@@ -29,11 +30,11 @@ function checkNumberLength() {
   // } else
 
   if(number.length >= 8 && number.length < 10 || result.length >= 8 && result.length < 10) {
-    display.style.fontSize = 54 + 'px';
+      currentResult.style.fontSize = 54 + 'px';
   } else if(number.length >= 10 && number.length <= 12 || result.length >= 10 && result.length <= 12) {
-      display.style.fontSize = 44 + 'px';
+      currentResult.style.fontSize = 44 + 'px';
     } else if(number.length >= 13 &&  number.length <= 15  || result.length >= 13 && result.length <= 15) {
-      display.style.fontSize = 34 + 'px';
+      currentResult.style.fontSize = 34 + 'px';
     }
     // else if(number.length > 15 || result.length > 15) {
     //   number = 'Err';
@@ -44,21 +45,25 @@ function checkNumberLength() {
 
     else if(result.length > 15) {
       result = 'Err';
-      display.style.fontSize = 64 + 'px';
-      display.innerText = result;
+      currentResult.style.fontSize = 64 + 'px';
+      currentResult.innerText = result;
     }
     else if(number.length < 8 &&  number.length >= 0 || result.length <  8 && result.length >= 0) {
-      display.style.fontSize = 64 + 'px';
+     currentResult.style.fontSize = 64 + 'px';
   }
 }
 
 
 function addNumber(e) {
   val = e.target.dataset.value;
+  if(number === '0') {
+    number = '';
+  }
+
 
   if(result !== '') {
     result = '';
-    display.innerText = number;
+    currentResult.innerText = number;
   }
 
   if(result === 'Err') {
@@ -71,7 +76,8 @@ function addNumber(e) {
   }
 
   if(number.length === 0 && val === '.') {
-    return false;
+    //return false;
+    number = '0';
   }
 
   if(e.target.classList.contains('number')) {
@@ -79,7 +85,7 @@ function addNumber(e) {
     number += val;
     // console.log(number);
     checkNumberLength();
-    display.innerText = number;
+    currentResult.innerText = number;
 
   } else {
     return false;
@@ -88,20 +94,40 @@ function addNumber(e) {
 }
 
 function addOperator(e) {
-
-
   val = e.target.dataset.value;
+  console.log(number, result, operator);
+
+  if(number.length == '0') {
+    number = '0';
+  }
+
+  // evalDiv.innerText += number;
+  // evalDiv.innerText += operator;
+
+
+  if(firstNumber !== '' && operator !== '' && number !== '') {
+    evaluate();
+    firstNumber = result;
+    //result = 0;
+  }
 
   if(result !== '') {
     firstNumber = result;
     result = '';
     number = '';
     operator = val;
-    } else {
+    // evalDiv.innerText += firstNumber;
+    // evalDiv.innerText += operator;
+  } else {
     operator = val;
     firstNumber = number;
     number = '';
+    // evalDiv.innerText += number;
+    // evalDiv.innerText += operator;
   }
+
+
+  // evalDiv.innerText += firstNumber + operator;
 
 
   console.log('fNum:' + firstNumber, 'num:' + number, 'op:' + operator);
@@ -122,11 +148,12 @@ function evaluate() {
     result = (parseFloat(firstNumber) * parseFloat(number)).toString(10);
     console.log(result);
   } else if(operator === '/') {
-    result = (parseFloat(firstNumber) / parseFloat(number)).toString(10);
+    result = (parseFloat(firstNumber) / parseFloat(number)).toFixed(10);
     console.log(result);
   }
 
-  display.innerText = result;
+
+  currentResult.innerText = result;
   checkNumberLength();
   firstNumber = '';
   number = '';
@@ -140,24 +167,24 @@ function clearLNumb() {
 
   number = '';
 
-  display.innerText = '0';
-  display.style.fontSize = 64 + 'px';
+  currentResult.innerText = '0';
+  currentResult.style.fontSize = 64 + 'px';
 
 
   // console.log(firstNumber, number + 'second console');
 }
 
 function cleanAll() {
-  // console.log(firstNumber, operator, number, result, 'first console');
+  console.log(firstNumber, operator, number, result, 'first console');
 
   firstNumber = '';
   operator = '';
   number = '';
   result = '';
 
-  display.innerText = '0';
-  display.style.fontSize = 64 + 'px';
-  // console.log(firstNumber, operator, number, result, 'second console');
+  currentResult.innerText = '0';
+  currentResult.style.fontSize = 64 + 'px';
+  console.log(firstNumber, operator, number, result + 'second console');
 }
 
 function delLastSymbol(e) {
@@ -166,18 +193,18 @@ function delLastSymbol(e) {
   // console.log(number + 'before del');
 
   number = number.substring(0, number.length - 1);
-  display.innerText = number;
+  currentResult.innerText = number;
   checkNumberLength();
   // console.log(number);
   // console.log(number + 'after del');
   if(number === '') {
-    display.innerText = 0;
+    currentResult.innerText = 0;
   }
 }
 
 function findSqrt() {
   if(firstNumber !== '') {
-    display.innerText = "Err";
+    currentResult.innerText = "Err";
     return false;
   }
 
@@ -188,7 +215,7 @@ function findSqrt() {
 
   console.log(result);
 
-  display.innerText = result;
+  currentResult.innerText = result;
   checkNumberLength();
   number = '';
   result = '';
@@ -197,6 +224,16 @@ function findSqrt() {
 function addGap() {
   if(number.length % 3 === 0) {
     number += 'x';
+  }
+}
+
+function evaluateHist(e) {
+  let value = e.target.dataset.value;
+
+  evalDiv.innerText += value;
+
+  if(value === '=') {
+    evalDiv.innerText = '';
   }
 }
 
@@ -211,6 +248,8 @@ deleteLastSymbol.addEventListener('click', delLastSymbol);
 sqrt.addEventListener('click', findSqrt);
 
 // display.addEventListener('change', addGap);
+
+standardButtons.forEach(standardButton => standardButton.addEventListener('click', evaluateHist));
 
 equal.addEventListener('click', evaluate);
 

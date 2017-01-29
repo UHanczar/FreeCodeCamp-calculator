@@ -29,13 +29,31 @@ html, body {
       width: 90%;
       height: 10rem;
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       justify-content: flex-end;
       align-items: flex-end;
       align-self: center;
       //border: 1px solid black;
       //margin-bottom: 2rem;
       font-size: 64px;
+
+      .eval-div {
+        width: 100%;
+        flex-direction: row;
+        justify-content: flex-end;
+        align-content: flex-start;
+        text-align: right;
+        font-size: 32px;
+      }
+
+      .current-result {
+        width: 100%;
+        flex-direction: row;
+        justify-content: flex-end;
+        align-content: flex-end;
+        font-size: 64px;
+        text-align: right;
+      }
 
     }
 
