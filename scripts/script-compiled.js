@@ -11,6 +11,7 @@ var numbers = document.querySelectorAll('.number');
 var operators = document.querySelectorAll('.operator');
 var clearLastNumber = document.querySelector('[data-value="CE"]');
 var clearAll = document.querySelector('[data-value="C"]');
+var point = document.querySelector('[data-value="."]');
 var deleteLastSymbol = document.querySelector('[data-value="«"]');
 var sqrt = document.getElementById('sqrt');
 var equal = document.getElementById('equal');
@@ -45,6 +46,9 @@ function checkNumberLength() {
   }
 }
 
+var pointFlag = true;
+var counter = 0;
+
 // function adds characters to 'number' varible
 function addNumber(e) {
   var val = e.target.dataset.value;
@@ -77,10 +81,14 @@ function addNumber(e) {
     number = '0';
   }
 
+  if (val === '.' && counter > 0) {
+    return false;
+  }
+
   // adding character to number
   if (e.target.classList.contains('number')) {
-    var _val = e.target.dataset.value;
-    number += _val;
+    val = e.target.dataset.value;
+    number += val;
     // console.log(number);
     checkNumberLength();
     currentResult.innerText = number;
@@ -92,6 +100,7 @@ function addNumber(e) {
 function addOperator(e) {
   var val = e.target.dataset.value;
   console.log(number, result, operator);
+  counter = 0;
 
   if (number.length == '0') {
     number = '0';
@@ -118,7 +127,9 @@ function addOperator(e) {
 }
 
 function evaluate() {
-  if (firstNumber === '' && number === '') {
+  counter = 0;
+
+  if (firstNumber === '' || number === '') {
     return false;
   }
 
@@ -155,6 +166,7 @@ function evaluate() {
 
 function clearLNumb() {
   // console.log(number + 'first console');
+  counter = 0;
   number = '';
 
   if (result !== '' && firstNumber !== '') {
@@ -172,6 +184,7 @@ function clearLNumb() {
 
 function cleanAll() {
   // console.log(firstNumber, operator, number, result, 'first console');
+  counter = 0;
 
   firstNumber = '';
   operator = '';
@@ -220,6 +233,13 @@ function findSqrt() {
 function evaluateHist(e) {
   var value = e.target.dataset.value;
 
+  if (value === '.' && counter > 0) {
+    evalDiv.innerText += '';
+    return false;
+  } else if (!number && value === '.' && counter === 0) {
+    evalDiv.innerText = '0';
+  }
+
   if (value === '«') {
     var val = evalDiv.innerText;
     val = val.substring(0, val.length - 1);
@@ -265,6 +285,10 @@ sqrt.addEventListener('click', findSqrt);
 // eventListener for agging data to history
 standardButtons.forEach(function (standardButton) {
   return standardButton.addEventListener('click', evaluateHist);
+});
+point.addEventListener('click', function () {
+  counter++;
+  console.log(counter);
 });
 // evaluating data
 equal.addEventListener('click', evaluate);

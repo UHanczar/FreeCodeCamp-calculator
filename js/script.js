@@ -7,6 +7,7 @@ const numbers = document.querySelectorAll('.number');
 const operators = document.querySelectorAll('.operator');
 const clearLastNumber = document.querySelector('[data-value="CE"]');
 const clearAll = document.querySelector('[data-value="C"]');
+const point = document.querySelector('[data-value="."]');
 const deleteLastSymbol = document.querySelector('[data-value="«"]');
 const sqrt = document.getElementById('sqrt');
 const equal = document.getElementById('equal');
@@ -44,9 +45,20 @@ function checkNumberLength() {
   }
 }
 
+
+let pointFlag = true;
+let counter = 0;
+
+
+
+
 // function adds characters to 'number' varible
 function addNumber(e) {
   let val = e.target.dataset.value;
+
+
+
+
 
   // condition works, when first character of new number adds, and default value changes
   if(number === '0') {
@@ -76,13 +88,19 @@ function addNumber(e) {
     number = '0';
   }
 
+  if(val === '.' && counter > 0) {
+    return false;
+
+  }
+
   // adding character to number
   if(e.target.classList.contains('number')) {
-    let val = e.target.dataset.value;
+    val = e.target.dataset.value;
     number += val;
     // console.log(number);
     checkNumberLength();
     currentResult.innerText = number;
+
   } else {
     return false;
   }
@@ -92,6 +110,7 @@ function addNumber(e) {
 function addOperator(e) {
   let val = e.target.dataset.value;
   console.log(number, result, operator);
+  counter = 0;
 
   if(number.length == '0') {
     number = '0';
@@ -118,7 +137,9 @@ function addOperator(e) {
 }
 
 function evaluate() {
-  if(firstNumber === '' && number === '') {
+  counter = 0;
+
+  if(firstNumber === '' || number === '') {
     return false;
   }
 
@@ -155,6 +176,7 @@ function evaluate() {
 
 function clearLNumb() {
   // console.log(number + 'first console');
+  counter = 0;
   number = '';
 
   if(result !== '' && firstNumber !== '') {
@@ -172,6 +194,7 @@ function clearLNumb() {
 
 function cleanAll() {
   // console.log(firstNumber, operator, number, result, 'first console');
+  counter = 0;
 
   firstNumber = '';
   operator = '';
@@ -221,6 +244,12 @@ function findSqrt() {
 function evaluateHist(e) {
   let value = e.target.dataset.value;
 
+  if(value === '.' && counter > 0) {
+    evalDiv.innerText += '';
+    return false;
+  } else if(!number && value === '.' && counter === 0) {
+    evalDiv.innerText = '0';
+  }
 
   if(value === '«') {
     let val = evalDiv.innerText;
@@ -243,9 +272,13 @@ function evaluateHist(e) {
 
   }
 
+
   if(value === '=' || value === 'C' || value === '√') {
     evalDiv.innerText = '';
   }
+
+
+
 
 
 
@@ -267,6 +300,11 @@ deleteLastSymbol.addEventListener('click', delLastSymbol);
 sqrt.addEventListener('click', findSqrt);
 // eventListener for agging data to history
 standardButtons.forEach(standardButton => standardButton.addEventListener('click', evaluateHist));
+point.addEventListener('click', function () {
+  counter++;
+  console.log(counter);
+
+});
 // evaluating data
 equal.addEventListener('click', evaluate);
 
