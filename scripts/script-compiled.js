@@ -92,50 +92,31 @@ function addNumber(e) {
     return false;
   }
 
-  // if(!number.length && val === '.') {
-  //   return false;
-  // }
-
   // adding character to number
   if (e.target.classList.contains('number')) {
     val = e.target.dataset.value;
     number += val;
-    console.log(number);
     checkNumberLength();
     currentResult.innerText = number;
   } else {
     return false;
   }
-
-  console.log(operator);
 }
 
 function addOperator(e) {
   var val = e.target.dataset.value;
-
   // for '.' checking
   counter = 0;
-
-  // if(val === operator) {
-  //   operator = val;
-  //   // return false;
-  // }
-  //
-  // if(number === '0') {
-  //   number = '0';
-  // }
 
   // for adding with operators
   if (number !== '' && firstNumber !== '' && operator !== '') {
     evaluate();
     firstNumber = result;
-    // result = 0;
   }
 
   // for adding with operators
   if (result !== '') {
     firstNumber = result;
-    // result = '';
     number = '';
     operator = val;
   } else if (number.length) {
@@ -154,20 +135,13 @@ function addOperator(e) {
     firstNumber = firstNumber.substring(0, firstNumber.length - 1);
     currentResult.innerText = firstNumber;
   }
-  // console.log(lastChar);
-  // console.log('fNum:' + firstNumber, 'num:' + number, 'op:' + operator);
 }
 
 function evaluate() {
 
-  //counter = 0;
-  // console.log(number);
-
-  // preventing evaluating with not complite stack of numbers or operator
   if (operator === '' && number !== '' || operator === '') {
     number = '0';
     currentResult.innerText = number;
-    console.log('number: ' + number);
   }
 
   // preventing evaluating with not complite stack of numbers or operator
@@ -180,7 +154,6 @@ function evaluate() {
     if (firstNumber === '' || number === '') {
       number = '0';
       currentResult.innerText = number;
-      //return false;
     }
 
   // throws error if there is some mess
@@ -203,13 +176,6 @@ function evaluate() {
     console.log(result);
   }
 
-  // if(result.includes('.')) {
-  //     counter = 1;
-  //     console.log('hello');
-  //
-  // }
-
-
   // checks number length
   if (result.length > 19) {
     result = 'Err';
@@ -222,13 +188,12 @@ function evaluate() {
   operator = '';
   firstNumber = '';
   number = '';
-  //result = '';
 }
 
 function clearLNumb() {
-  // console.log(number + 'first console');
   counter = 0;
   number = '0';
+
   // if we decided to del operator
   if (result !== '' && firstNumber !== '') {
     result = '';
@@ -237,14 +202,13 @@ function clearLNumb() {
 
   currentResult.innerText = '0';
   currentResult.style.fontSize = 64 + 'px';
-  // console.log(firstNumber, number + 'second console');
+
   if (result === undefined || result == isNaN(NaN)) {
     currentResult.innerText = 'Err';
   }
 }
 
 function cleanAll() {
-  // console.log(firstNumber, operator, number, result, 'first console');
   counter = 0;
 
   firstNumber = '';
@@ -253,19 +217,17 @@ function cleanAll() {
   result = '';
   currentResult.innerText = '0';
   currentResult.style.fontSize = 64 + 'px';
-  // console.log(firstNumber, operator, number, result + 'second console');
 }
 
 function delLastSymbol(e) {
   // adding symbol to number
   addNumber(e);
-  // console.log(number + 'before del');
+
   // cutting last symbol
   number = number.substring(0, number.length - 1);
   currentResult.innerText = number;
   checkNumberLength();
-  // console.log(number);
-  // console.log(number + 'after del');
+
   // if number.length === 0, number = 0
   if (!number.includes('.')) {
     counter = 0;
@@ -277,24 +239,9 @@ function delLastSymbol(e) {
     firstNumber = '';
     currentResult.innerText = number;
   }
-
-  // if(result.length && currentResult.innerText === result) {
-  //   currentResult.innerText = '0';
-  //   number = '0';
-  //   firstNumber = '0';
-  //
-  // }
 }
 
 function findSqrt() {
-  // prevents sqrt from 0
-  // if(firstNumber !== '' || !number.length) {
-  //   currentResult.innerText = "Err";
-  //   return false;
-  // }
-
-  console.log(number);
-
   // if you want make sqrt from result
   if (result !== '' && !number.length) {
     number = result;
@@ -303,50 +250,21 @@ function findSqrt() {
   // making sqrt from number
   var num = Math.sqrt(parseInt(number, 10));
   number = num.toString();
-  // console.log(number.length, typeof num);
   result = number.length > 18 ? parseFloat(num).toFixed(15) : number;
-
-  // console.log(result);
   currentResult.innerText = result;
   checkNumberLength();
   number = '';
-  //result = '';
 }
 
 function evaluateHist(e) {
   var value = e.target.dataset.value;
-
-  // if(value === operator) {
-  //   return false;
-  // }
-
-  // if(value === operator) {
-  //   evalDiv.innerText += '';
-  // }
-
-  // if(value === '.' && counter === 0 && number === '0.') {
-  //   console.log(number);
-  //   evalDiv.innerText = '0' + value;
-  // }
 
   // preventing adding '.' if forbidden
   var lastSymbolLength = evalDiv.innerText.length - 1;
   var lastChar = evalDiv.innerText[lastSymbolLength];
   if (lastChar === '.') {
     evalDiv.innerText += '';
-    //return false;
   }
-
-  //
-  // if(value === '.' && !firstNumber.length && number === '0.' && counter === 0) {
-  //   console.log(number);
-  //   evalDiv.innerText += '';
-  // }
-
-  // else if(firstNumber.length && number === '0.' && value === '.' && counter === 0) {
-  //   console.log(number);
-  //   evalDiv.innerText += '0';
-  // }
 
   // prevents return '.' when forbidden
   if (value === '.' && counter > 0) {
@@ -362,11 +280,6 @@ function evaluateHist(e) {
   } else if (value === '.' && number === '0.' && firstNumber.length) {
     evalDiv.innerText = firstNumber + operator + number.substring(0, number.length - 1);
   }
-
-  // if(value === '.' && !number.length) {
-  //   evalDiv.innerText = firstNumber + operator + '0';
-  // }
-
 
   // if delete symbol uses
   if (value === '«') {
@@ -406,11 +319,6 @@ function evaluateHist(e) {
   if (firstNumber === '' && value === '=' || number === '' && value === '=') {
     evalDiv.innerText = '';
   }
-
-  // if(value === '=' && !result.length) {
-  //   evalDiv.innerText += '';
-  //
-  // }
 }
 
 // eventListener for adding numbers
@@ -436,7 +344,7 @@ standardButtons.forEach(function (standardButton) {
 });
 point.addEventListener('click', function () {
   counter++;
-  console.log(counter);
+  // console.log(counter);
 });
 
 // evaluating data
