@@ -1,7 +1,5 @@
 'use strict';
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-
 //Dom variables
 var display = document.querySelector('.enter-field');
 var evalDiv = document.querySelector('.eval-div');
@@ -27,6 +25,8 @@ var firstNumber = '';
 var result = '';
 // display current number on the screen
 currentResult.innerText = '0';
+// counter for '.'
+var counter = 0;
 
 // function checks number length to be less than 18 characters  and changes font-size according to number's length
 function checkNumberLength() {
@@ -36,7 +36,7 @@ function checkNumberLength() {
   } else if (number.length >= 10 && number.length <= 12 || result.length >= 10 && result.length <= 12) {
     currentResult.style.fontSize = 44 + 'px';
   } else if (number.length >= 13 && number.length <= 19 || result.length >= 13 && result.length <= 19) {
-    currentResult.style.fontSize = 30 + 'px';
+    currentResult.style.fontSize = 27 + 'px';
   } else if (number.length > 19 || result.length > 19) {
     result = 'Err';
     currentResult.innerText = result;
@@ -45,9 +45,6 @@ function checkNumberLength() {
     currentResult.style.fontSize = 64 + 'px';
   }
 }
-
-var pointFlag = true;
-var counter = 0;
 
 // function adds characters to 'number' varible
 function addNumber(e) {
@@ -76,67 +73,122 @@ function addNumber(e) {
   }
 
   // condition works if we press '.' button, so it inserts '0' before '.'
-  if (number.length === 0 && val === '.') {
+  if (!number.length && val === '.') {
     //return false;
     number = '0';
   }
 
+  // for evalDiv data
+  if (val === '.' && result.length) {
+    firstNumber = '';
+    result = '';
+    //counter = 1;
+  }
+
+  // prevents adding '.'
   if (val === '.' && counter > 0) {
+    number = '0.';
+    currentResult.innerText = number;
     return false;
   }
+
+  // if(!number.length && val === '.') {
+  //   return false;
+  // }
 
   // adding character to number
   if (e.target.classList.contains('number')) {
     val = e.target.dataset.value;
     number += val;
-    // console.log(number);
+    console.log(number);
     checkNumberLength();
     currentResult.innerText = number;
   } else {
     return false;
   }
+
+  console.log(operator);
 }
 
 function addOperator(e) {
   var val = e.target.dataset.value;
-  console.log(number, result, operator);
+
+  // for '.' checking
   counter = 0;
 
-  if (number.length == '0') {
-    number = '0';
-  }
+  // if(val === operator) {
+  //   operator = val;
+  //   // return false;
+  // }
+  //
+  // if(number === '0') {
+  //   number = '0';
+  // }
 
-  if (firstNumber !== '' && operator !== '' && number !== '') {
+  // for adding with operators
+  if (number !== '' && firstNumber !== '' && operator !== '') {
     evaluate();
     firstNumber = result;
     // result = 0;
   }
 
+  // for adding with operators
   if (result !== '') {
     firstNumber = result;
     // result = '';
     number = '';
     operator = val;
-  } else {
+  } else if (number.length) {
+    // adding if !firstnumber
     operator = val;
     firstNumber = number;
     number = '';
+  } else if (!number.length) {
+    operator = val;
   }
 
+  // checking '.' symbol
+  var lastSymbolLength = firstNumber.length - 1;
+  var lastChar = firstNumber[lastSymbolLength];
+  if (lastChar === '.') {
+    firstNumber = firstNumber.substring(0, firstNumber.length - 1);
+    currentResult.innerText = firstNumber;
+  }
+  // console.log(lastChar);
   // console.log('fNum:' + firstNumber, 'num:' + number, 'op:' + operator);
 }
 
 function evaluate() {
-  counter = 0;
 
-  if (firstNumber === '' || number === '') {
-    return false;
+  //counter = 0;
+  // console.log(number);
+
+  // preventing evaluating with not complite stack of numbers or operator
+  if (operator === '' && number !== '' || operator === '') {
+    number = '0';
+    currentResult.innerText = number;
+    console.log('number: ' + number);
   }
 
-  if (result === undefined || result == isNaN(NaN)) {
+  // preventing evaluating with not complite stack of numbers or operator
+  if (number.length && operator === '') {
+    firstNumber = '';
+    number = '0';
+    currentResult.innerText = number;
+    return false;
+  } else // prevents evaluating just clicking '='
+    if (firstNumber === '' || number === '') {
+      number = '0';
+      currentResult.innerText = number;
+      //return false;
+    }
+
+  // throws error if there is some mess
+  if (result === 'undefined' || result == isNaN(NaN)) {
     currentResult.innerText = 'Err';
   }
 
+  // process of evaluation
   if (operator === '+') {
     result = (parseFloat(firstNumber) + parseFloat(number)).toString(10);
     console.log(result);
@@ -151,6 +203,14 @@ function evaluate() {
     console.log(result);
   }
 
+  // if(result.includes('.')) {
+  //     counter = 1;
+  //     console.log('hello');
+  //
+  // }
+
+
+  // checks number length
   if (result.length > 19) {
     result = 'Err';
     currentResult.innerText = result;
@@ -159,16 +219,17 @@ function evaluate() {
 
   checkNumberLength();
   currentResult.innerText = result;
+  operator = '';
   firstNumber = '';
   number = '';
-  // result = '';
+  //result = '';
 }
 
 function clearLNumb() {
   // console.log(number + 'first console');
   counter = 0;
-  number = '';
-
+  number = '0';
+  // if we decided to del operator
   if (result !== '' && firstNumber !== '') {
     result = '';
     operator = '';
@@ -188,7 +249,7 @@ function cleanAll() {
 
   firstNumber = '';
   operator = '';
-  number = '';
+  number = '0';
   result = '';
   currentResult.innerText = '0';
   currentResult.style.fontSize = 64 + 'px';
@@ -196,31 +257,53 @@ function cleanAll() {
 }
 
 function delLastSymbol(e) {
+  // adding symbol to number
   addNumber(e);
   // console.log(number + 'before del');
+  // cutting last symbol
   number = number.substring(0, number.length - 1);
   currentResult.innerText = number;
   checkNumberLength();
   // console.log(number);
   // console.log(number + 'after del');
-  if (number === '') {
-    currentResult.innerText = 0;
+  // if number.length === 0, number = 0
+  if (!number.includes('.')) {
+    counter = 0;
   }
+
+  // when result, deletes it and makes value = 0
+  if (currentResult.innerText === result) {
+    number = '0';
+    firstNumber = '';
+    currentResult.innerText = number;
+  }
+
+  // if(result.length && currentResult.innerText === result) {
+  //   currentResult.innerText = '0';
+  //   number = '0';
+  //   firstNumber = '0';
+  //
+  // }
 }
 
 function findSqrt() {
-  if (firstNumber !== '') {
-    currentResult.innerText = "Err";
-    return false;
-  }
+  // prevents sqrt from 0
+  // if(firstNumber !== '' || !number.length) {
+  //   currentResult.innerText = "Err";
+  //   return false;
+  // }
 
-  if (result !== '') {
+  console.log(number);
+
+  // if you want make sqrt from result
+  if (result !== '' && !number.length) {
     number = result;
   }
 
+  // making sqrt from number
   var num = Math.sqrt(parseInt(number, 10));
   number = num.toString();
-  console.log(number.length, typeof num === 'undefined' ? 'undefined' : _typeof(num));
+  // console.log(number.length, typeof num);
   result = number.length > 18 ? parseFloat(num).toFixed(15) : number;
 
   // console.log(result);
@@ -233,13 +316,59 @@ function findSqrt() {
 function evaluateHist(e) {
   var value = e.target.dataset.value;
 
-  if (value === '.' && counter > 0) {
+  // if(value === operator) {
+  //   return false;
+  // }
+
+  // if(value === operator) {
+  //   evalDiv.innerText += '';
+  // }
+
+  // if(value === '.' && counter === 0 && number === '0.') {
+  //   console.log(number);
+  //   evalDiv.innerText = '0' + value;
+  // }
+
+  // preventing adding '.' if forbidden
+  var lastSymbolLength = evalDiv.innerText.length - 1;
+  var lastChar = evalDiv.innerText[lastSymbolLength];
+  if (lastChar === '.') {
     evalDiv.innerText += '';
-    return false;
-  } else if (!number && value === '.' && counter === 0) {
-    evalDiv.innerText = '0';
+    //return false;
   }
 
+  //
+  // if(value === '.' && !firstNumber.length && number === '0.' && counter === 0) {
+  //   console.log(number);
+  //   evalDiv.innerText += '';
+  // }
+
+  // else if(firstNumber.length && number === '0.' && value === '.' && counter === 0) {
+  //   console.log(number);
+  //   evalDiv.innerText += '0';
+  // }
+
+  // prevents return '.' when forbidden
+  if (value === '.' && counter > 0) {
+    evalDiv.innerText = number;
+    return false;
+  }
+
+  // gerulates return '.'
+  if (value === '.' && number === '0.' && result.length && firstNumber.length) {
+    evalDiv.innerText = '';
+  } else if (value === '.' && number === '0.' && !firstNumber.length) {
+    evalDiv.innerText = number.substring(0, number.length - 1);
+  } else if (value === '.' && number === '0.' && firstNumber.length) {
+    evalDiv.innerText = firstNumber + operator + number.substring(0, number.length - 1);
+  }
+
+  // if(value === '.' && !number.length) {
+  //   evalDiv.innerText = firstNumber + operator + '0';
+  // }
+
+
+  // if delete symbol uses
   if (value === '«') {
     var val = evalDiv.innerText;
     val = val.substring(0, val.length - 1);
@@ -248,21 +377,40 @@ function evaluateHist(e) {
     return false;
   }
 
-  if (value === 'CE') {
+  // if 'CE' symbol eses
+  if (value === 'CE' && operator !== '') {
     evalDiv.innerText = firstNumber + operator;
     return false;
   }
 
+  // regulates adding symbols when other conditions allow
   if (result !== '') {
-    evalDiv.innerText = result;
-    evalDiv.innerText += value;
+    // evalDiv.innerText = result;
+    evalDiv.innerText = number;
   } else {
     evalDiv.innerText += value;
   }
 
-  if (value === '=' || value === 'C' || value === '√') {
+  // regulates adding operator
+  if (value === operator) {
+    evalDiv.innerText = result.length ? result + value : firstNumber + value;
+  }
+
+  // regulates steps, when special symbols use
+  if (value === '=' && firstNumber !== '' || value === 'C' || value === '√' || value === 'CE' && firstNumber === '') {
+    evalDiv.innerText = '';
+    return false;
+  }
+
+  // regulates steps, when special symbols use
+  if (firstNumber === '' && value === '=' || number === '' && value === '=') {
     evalDiv.innerText = '';
   }
+
+  // if(value === '=' && !result.length) {
+  //   evalDiv.innerText += '';
+  //
+  // }
 }
 
 // eventListener for adding numbers
@@ -290,6 +438,7 @@ point.addEventListener('click', function () {
   counter++;
   console.log(counter);
 });
+
 // evaluating data
 equal.addEventListener('click', evaluate);
 
