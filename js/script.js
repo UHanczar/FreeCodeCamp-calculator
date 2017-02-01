@@ -27,9 +27,6 @@ currentResult.innerText = '0';
 // counter for '.'
 let counter = 0;
 
-
-
-
 // function checks number length to be less than 18 characters  and changes font-size according to number's length
 function checkNumberLength() {
 
